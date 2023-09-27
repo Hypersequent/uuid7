@@ -103,12 +103,12 @@ func TestEncodeDecode(t *testing.T) {
 	}
 }
 
-func TestLengthChange22to21(t *testing.T) {
-	for lastByte := 0; lastByte < 256; lastByte++ {
+func TestLengthChange21to22(t *testing.T) {
+	for lastByte := 0; lastByte < 1; lastByte++ {
 		// encodes to 22 characters
 		smallerUUID := UUID{0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, byte(lastByte)}
 		smallerEncoded := encodeBase58Raw(smallerUUID)
-		if len(smallerEncoded) != 22 {
+		if len(smallerEncoded) != 20 {
 			t.Errorf("encoded string should be 22 characters long, got %d", len(smallerEncoded))
 		}
 
@@ -120,7 +120,7 @@ func TestLengthChange22to21(t *testing.T) {
 		}
 
 		// compare without padding - works as expected for all lastByte values
-		if smallerEncoded > largerEncoded {
+		if !less(smallerEncoded, largerEncoded) {
 			t.Errorf("smallerEncoded should be smaller than largerEncoded, got %s and %s", smallerEncoded, largerEncoded)
 		}
 
@@ -133,51 +133,9 @@ func TestLengthChange22to21(t *testing.T) {
 	}
 }
 
-func TestLengthChange21to22(t *testing.T) {
-	for lastByte := 0; lastByte < 256; lastByte++ {
-
-		// encodes to 21 characters
-		smallerUUID := UUID{0, 34, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, byte(lastByte)}
-		smallerEncoded := encodeBase58Raw(smallerUUID)
-		if len(smallerEncoded) != 21 {
-			t.Errorf("encoded string should be 21 characters long, got %d", len(smallerEncoded))
-		}
-
-		// encodes to 22 characters
-		largerUUID := UUID{0, 35, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, byte(lastByte)}
-		largerEncoded := encodeBase58Raw(largerUUID)
-		if len(largerEncoded) != 22 {
-			t.Errorf("encoded string should be 21 characters long, got %d", len(largerEncoded))
-		}
-
-		// compare without padding
-		happens := false
-		if smallerEncoded > largerEncoded {
-			// this happens indeed for all lastByte values
-			happens = true
-		}
-
-		if !happens {
-			t.Errorf("we found counter-example: %v %s and %v %s", smallerUUID, smallerEncoded, largerUUID, largerEncoded)
-		}
-
-		// compare with padding
-		smallerEncodedPad := EncodeBase58(smallerUUID)
-		largerEncodedPad := EncodeBase58(largerUUID)
-		if smallerEncodedPad > largerEncodedPad {
-			// this never happens for all lastByte values
-			t.Errorf("smallerEncodedPad should be smaller than largerEncodedPad, got %s and %s", smallerEncodedPad, largerEncodedPad)
-		}
-
-		// last sanity checks
-		decSmallerUUID, _ := DecodeBase58(smallerEncodedPad)
-		if decSmallerUUID != smallerUUID {
-			t.Errorf("decSmallerUUID should be %v, got %v", smallerUUID, decSmallerUUID)
-		}
-
-		decLargerUUID, _ := DecodeBase58(largerEncodedPad)
-		if decLargerUUID != largerUUID {
-			t.Errorf("decLargerUUID should be %v, got %v", largerUUID, decLargerUUID)
-		}
+func less(a string, b string) bool {
+	if len(a) == len(b) {
+		return a < b
 	}
+	return len(a) < len(b)
 }

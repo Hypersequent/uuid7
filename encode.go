@@ -2,8 +2,9 @@ package uuid7
 
 import (
 	"errors"
-	"github.com/mr-tron/base58"
 	"strings"
+
+	"github.com/mr-tron/base58"
 )
 
 func NewString() string {
@@ -11,11 +12,11 @@ func NewString() string {
 }
 
 func encodeBase58Raw(u UUID) string {
-	return base58.Encode(u[:])
+	return FastBase58EncodingAlphabet(u[:], BTCAlphabet)
 }
 
 func EncodeBase58(u UUID) string {
-	s := base58.Encode(u[:])
+	s := FastBase58EncodingAlphabet(u[:], BTCAlphabet)
 	if len(s) != 22 {
 		s = strings.Repeat("1", 22-len(s)) + s // pad with leading "zeroes" (1 in BTC base58)
 	}
@@ -37,5 +38,8 @@ func DecodeBase58(s string) (UUID, error) {
 	if len(d) > 16 {
 		d = d[len(d)-16:] // remove leading "zeroes" (1 in BTC base58)
 	}
-	return UUID(d), nil
+
+	var result UUID
+	copy(result[:], d)
+	return result, nil
 }
