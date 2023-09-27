@@ -6,6 +6,17 @@ on [draft 11 of RFC4122bis](https://datatracker.ietf.org/doc/draft-ietf-uuidrev-
 Besides this library implements a custom string encoding for UUIDv7, which is lexicographically sortable. This string 
 encoding is not defined in the RFC4122bis draft. The string encoding is based on Base58 encoding used in Bitcoin.
 
+To make string representation visually more distinguishable from other UUIDs, there is a dash `_` character 
+inserted after the first 9 characters.
+
+Example: 
+```txt
+1C3XR6Gzv_es6ViopPLabMW
+1C3XR6Gzv_gnTYagGW7m6AU
+1C3VGAJyH_iXkB2HfuhEusP
+1C3Rttz29_K2U2o4AdhPF5b
+```
+
 ## Binary format
 
 ```plain 
@@ -33,16 +44,27 @@ encoding is not defined in the RFC4122bis draft. The string encoding is based on
 The UUID is encoded using Base58 encoding using BTC alphabet, which is the same as the one used in [Bitcoin](https://en.bitcoinwiki.org/wiki/Base58). 
 Bitcoin address checksum is not used. 
 
-The encoded string is always 22 characters long (padded with leading "zero" digit `1` if needed).
+The encoded string is always 23 characters long (padded with leading "zero" digit `1` if needed).
 
-String representation is sortable lexicographically, which is good for databases.
+To make string representation visually more distinguishable from other UUIDs, there is a dash `_` character
+inserted after the first 9 characters.
 
+String representation is sortable lexicographically, which a useful property when using as keys in databases.
 
 ## Usage
 
 ```go
-ustr := hyperuuid7.NewString() // returns a 22 character long string like "1C3Rttz29K2U2o4AdhPF5b"
+package main
+
+import "fmt"
+import "github.com/hypersequent/uuid7"
+
+func main() {
+    uuid := uuid7.NewString() // returns a 22 character long string like "1C3Rttz29_K2U2o4AdhPF5b" 
+    fmt.Println(uuid)
+}
 ```
+
 ## Dependencies
 
 - [github.com/mr-tron/base58](https://github.com/mr-tron/base58) - Base58 encoding/decoding package (MIT License)
