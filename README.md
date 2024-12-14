@@ -1,10 +1,9 @@
 # Hypersequent's UUID7
 
-This is a Go library for generating UUIDv7 based 
-on [draft 11 of RFC4122bis](https://datatracker.ietf.org/doc/draft-ietf-uuidrev-rfc4122bis/11/) — draft of the new UUID specification.
+This is a Go library for generating UUIDv7 based on [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html) — the new UUID specification published in May 2024.
 
-Besides this library implements a custom string encoding for UUIDv7, which is lexicographically sortable. This string 
-encoding is not defined in the RFC4122bis draft. The string encoding is based on Base58 encoding used in Bitcoin.
+This library also implements a custom string encoding for UUIDv7, which is lexicographically sortable. This string 
+encoding is not defined in RFC 9562 and is based on the Base58 encoding used in Bitcoin.
 
 To make string representation visually more distinguishable from other UUIDs, there is a dash `_` character 
 inserted after the first 9 characters.
@@ -34,9 +33,9 @@ Example:
 ```
 
 - **unix_ts_ms** is filled with Go's `time.Now().UnixNano() / 1e6`
-- **ver** is `0b0111` for UUIDv7 (RFC4122bis draft 11)
-- **rand_a** is filled using "Replace Left-Most Random Bits with Increased Clock Precision" (Method 3)
-- **var** is `0b10` for UUIDv7 (RFC4122bis draft 11)
+- **ver** is `0b0111` for UUIDv7 (RFC 9562)
+- **rand_a** is filled using "Replace Leftmost Random Bits with Increased Clock Precision" (Method 3 in RFC 9562)
+- **var** is `0b10` for UUIDv7 (RFC 9562)
 - **rand_b** is cryptographically random bits, generated using Go's `crypto/rand` package
 
 ## String Encoding 
