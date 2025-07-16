@@ -35,13 +35,13 @@ func generateUUID() {
 		os.Exit(1)
 	}
 
-	// Print both the base58 encoded string and raw hex representation
+	// Print only canonical HyperUUID7 base58 encoded string
 	base58String := uuid7.EncodeBase58(uuid)
 	fmt.Printf("%s\n", base58String)
 }
 
 func printUsage() {
-	fmt.Println("Hypersequent UUID7 Tool")
+	fmt.Println("Hypersequent HyperUUID7 Tool")
 	fmt.Println("")
 	fmt.Println("Usage:")
 	fmt.Println("  go run cmd/uuid7tool/tool.go <command>")
@@ -50,7 +50,7 @@ func printUsage() {
 	fmt.Println("  ./uuid7tool <command>")
 	fmt.Println("")
 	fmt.Println("Commands:")
-	fmt.Println("  new, generate    Generate and print a new UUID7")
+	fmt.Println("  new, generate    Generate and print a new HyperUUID7")
 	fmt.Println("  help, -h, --help Show this help message")
 	fmt.Println("")
 	fmt.Println("Examples:")
