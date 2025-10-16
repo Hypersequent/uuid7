@@ -1,5 +1,8 @@
 # Hypersequent's UUID7
 
+> [!WARNING]
+> This package has been renamed to **[hqid7](https://github.com/Hypersequent/hqid7)** to avoid confusion with the official UUID7 standard released in RFC 9562. Please use the new package instead.
+
 This is a Go library for generating UUIDv7 based on [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562.html) — the new UUID specification published in May 2024.
 
 This library also implements a custom string encoding for UUIDv7, which is lexicographically sortable. This string 
